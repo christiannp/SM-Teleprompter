@@ -4,7 +4,7 @@ A web rebuild (macOS, Chrome) of the Windows **SM/GMS Teleprompter v5.4B** stage
 
 - **Control** window (`index.html`) and **display** window (`display.html`) run on the same Mac. The display goes on the 2nd screen.
 - The two windows sync over `BroadcastChannel`, keep state in `localStorage`, and work offline.
-- It will be hosted at `chrisnp.fun/app/tele`.
+- It's hosted at `chrisnp.fun/app/tele`.
 
 ## Docs
 
@@ -13,4 +13,6 @@ A web rebuild (macOS, Chrome) of the Windows **SM/GMS Teleprompter v5.4B** stage
 
 ## Status
 
-Spec stage. The code comes next.
+- Web 1.0 is live: [control](https://chrisnp.fun/app/tele/) and [stage display](https://chrisnp.fun/app/tele/display.html).
+- The current build zip is in [christiannp/gms-teleprompter-web](https://github.com/christiannp/gms-teleprompter-web).
+- It hasn't been tested yet against a real OpenLP install or on the booth Mac.
