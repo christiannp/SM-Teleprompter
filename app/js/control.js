@@ -258,18 +258,15 @@
     try {
       pipWin = await window.documentPictureInPicture.requestWindow({ width: Math.round(STRIP_W * 0.82), height: Math.round(112 * 0.82) });
     } catch { toast('Could not float the strip'); return; }
+    // link the same stylesheet files (inline <style> copies would be blocked by the page's lock-down rules)
     for (const ss of [...document.styleSheets]) {
-      try {
-        const st = document.createElement('style');
-        st.textContent = [...ss.cssRules].map((r) => r.cssText).join('\n');
-        pipWin.document.head.appendChild(st);
-      } catch {
-        if (ss.href) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = ss.href; pipWin.document.head.appendChild(l); }
-      }
+      if (!ss.href) continue;
+      const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = ss.href;
+      pipWin.document.head.appendChild(l);
     }
     pipWin.document.title = 'GMS Teleprompter';
     pipWin.document.body.className = 'pip';
-    const icons = document.querySelector('svg[aria-hidden]').cloneNode(true);
+    const icons = document.querySelector('svg.sprite').cloneNode(true);
     pipWin.document.body.append(icons, el.strip);
     el.ghost.hidden = false;
     fitStrip(pipWin);
@@ -401,8 +398,20 @@
     let last = 'openlp';
     try { last = localStorage.getItem(HELP_TAB_KEY) || last; } catch {}
     selectHelpTab(last, false);
-    hDlg.showModal();
+    if (!hDlg.open) hDlg.showModal();
+    if (pipWin) { try { window.focus(); } catch {} }   // strip is floating: the dialog lives in this (main) window
   }
+  // click on the dimmed backdrop (outside the box) closes the help dialog
+  let helpDownOutside = false;
+  const outsideHelp = (e) => {
+    const r = hDlg.getBoundingClientRect();
+    return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+  };
+  hDlg.addEventListener('pointerdown', (e) => { helpDownOutside = e.target === hDlg && outsideHelp(e); });
+  hDlg.addEventListener('click', (e) => {
+    if (helpDownOutside && e.target === hDlg && outsideHelp(e)) hDlg.close();
+    helpDownOutside = false;
+  });
   helpTabs.forEach((t, i) => {
     t.addEventListener('click', () => selectHelpTab(t.dataset.tab, true));
     t.addEventListener('keydown', (e) => {
