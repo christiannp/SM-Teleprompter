@@ -382,6 +382,40 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
+  /* ---------------- help dialog (OpenLP / ProPresenter) ---------------- */
+  const hDlg = $('helpDlg');
+  const helpTabs = [...hDlg.querySelectorAll('[role="tab"]')];
+  const HELP_TAB_KEY = 'gmsTele.helpTab.v1';
+  function selectHelpTab(name, focus) {
+    const tab = helpTabs.find((t) => t.dataset.tab === name) || helpTabs[0];
+    for (const t of helpTabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      $(t.getAttribute('aria-controls')).hidden = !on;
+    }
+    if (focus) tab.focus();
+    try { localStorage.setItem(HELP_TAB_KEY, tab.dataset.tab); } catch {}
+  }
+  function openHelp() {
+    let last = 'openlp';
+    try { last = localStorage.getItem(HELP_TAB_KEY) || last; } catch {}
+    selectHelpTab(last, false);
+    hDlg.showModal();
+  }
+  helpTabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectHelpTab(t.dataset.tab, true));
+    t.addEventListener('keydown', (e) => {
+      let j = -1;
+      if (e.key === 'ArrowRight') j = (i + 1) % helpTabs.length;
+      else if (e.key === 'ArrowLeft') j = (i - 1 + helpTabs.length) % helpTabs.length;
+      else if (e.key === 'Home') j = 0;
+      else if (e.key === 'End') j = helpTabs.length - 1;
+      if (j >= 0) { e.preventDefault(); selectHelpTab(helpTabs[j].dataset.tab, true); }
+    });
+  });
+  $('helpToSettings').addEventListener('click', () => { hDlg.close(); openSettings(); });
+
   /* ---------------- wiring ---------------- */
   const on = (id, fn) => $(id).addEventListener('click', fn);
   on('minUp', () => setMinutes((+el.minutes.value || 0) + 1));
@@ -403,6 +437,7 @@
   on('openDisplay', openDisplay); on('openDisplay2', openDisplay);
   on('floatBtn', floatStrip); on('unfloat', () => pipWin && pipWin.close());
   on('settingsBtn', openSettings);
+  on('helpBtn', openHelp);
 
   el.runList.addEventListener('click', (e) => {
     const li = e.target.closest('li'); if (!li) return;

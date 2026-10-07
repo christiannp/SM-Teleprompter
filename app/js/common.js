@@ -2,7 +2,7 @@
 'use strict';
 
 const GMS = (() => {
-  const VERSION = 'web 1.0';
+  const VERSION = 'web 1.1';
   const CH_NAME = 'gms-teleprompter';
   const K = {
     settings: 'gmsTele.settings.v1',
