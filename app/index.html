@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GMS Teleprompter</title>
+<meta name="theme-color" content="#111214">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/control.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7 7 17M17 7l1.7-1.7"/></g></symbol>
+  <symbol id="i-watch" viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 13.5V9.5M9.5 2.8h5M12 2.8V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 11h6M9 14.5h6M9 18h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm8.4 4.6v-2.4l-2.3-.5a6.6 6.6 0 0 0-.7-1.6l1.3-2-1.7-1.7-2 1.3a6.6 6.6 0 0 0-1.6-.7L13.2 3.6h-2.4l-.5 2.3a6.6 6.6 0 0 0-1.6.7l-2-1.3L5 7l1.3 2a6.6 6.6 0 0 0-.7 1.6l-2.3.5v2.4l2.3.5c.2.6.4 1.1.7 1.6L5 17.6 6.7 19.3l2-1.3c.5.3 1 .5 1.6.7l.5 2.3h2.4l.5-2.3c.6-.2 1.1-.4 1.6-.7l2 1.3 1.7-1.7-1.3-2c.3-.5.5-1 .7-1.6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-float" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="11.5" y="11" width="8" height="6" rx="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-screen" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 20.5h7M12 17v3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-top" viewBox="0 0 28 20"><rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="1" y="1" width="26" height="6" rx="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-heal" viewBox="0 0 28 20"><rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="1" y="1" width="26" height="6" rx="1.5" fill="currentColor"/><rect x="4" y="10" width="8.5" height="6.5" rx="1" fill="currentColor"/><rect x="15.5" y="10" width="8.5" height="6.5" rx="1" fill="currentColor"/></symbol>
+  <symbol id="i-full" viewBox="0 0 28 20"><rect x="1" y="1" width="26" height="18" rx="2" fill="currentColor"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div id="stripHome">
+  <div id="strip" class="strip">
+    <div class="logo"><span>GMS</span></div>
+
+    <section class="sec sec-cd">
+      <div class="vlabel">COUNTDOWN</div>
+      <div class="minute">
+        <label for="minutes">MINUTE</label>
+        <div class="spin">
+          <input id="minutes" type="number" inputmode="numeric" min="0" max="999" step="1" value="0" title="Set minute">
+          <div class="arrows">
+            <button type="button" id="minUp" tabindex="-1" aria-label="More"><svg><use href="#i-up"/></svg></button>
+            <button type="button" id="minDown" tabindex="-1" aria-label="Less"><svg><use href="#i-down"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <button type="button" class="key" id="cdSet" title="Start countdown">SET</button>
+        <button type="button" class="key" id="cdClr" title="Clear countdown">CLR</button>
+      </div>
+    </section>
+
+    <section class="sec sec-msg">
+      <div class="vlabel">MESSAGE</div>
+      <div class="msgcol">
+        <div class="tplrow">
+          <select id="tpl" title="Choose message template"></select>
+          <button type="button" class="icon" id="editTpl" title="Edit message template"><svg><use href="#i-doc"/></svg></button>
+        </div>
+        <textarea id="msgInput" rows="2" spellcheck="false" placeholder="Type your message here" title="⌘↵ to set"></textarea>
+      </div>
+      <div class="col">
+        <button type="button" class="key" id="prev" title="Previous entry (⌘↑)"><svg><use href="#i-up"/></svg></button>
+        <button type="button" class="key" id="next" title="Next entry (⌘↓)"><svg><use href="#i-down"/></svg></button>
+      </div>
+      <div class="col">
+        <button type="button" class="key" id="msgSet" title="Show message on stage (⌘↵)">SET</button>
+        <button type="button" class="key" id="msgClr" title="Clear message">CLR</button>
+      </div>
+    </section>
+
+    <section class="sec sec-tools">
+      <div class="toolrow">
+        <button type="button" class="key sq" id="blink" title="Blink the stage screen"><svg><use href="#i-sun"/></svg></button>
+        <button type="button" class="key wide" id="ct" title="Big countdown (CT)"><svg><use href="#i-watch"/></svg><b id="ctState">OFF</b></button>
+      </div>
+      <div class="seg" role="radiogroup" aria-label="Display layout">
+        <button type="button" data-mode="top" role="radio"><svg><use href="#i-top"/></svg><span>TOP</span></button>
+        <button type="button" data-mode="heal" role="radio"><svg><use href="#i-heal"/></svg><span>HEAL</span></button>
+        <button type="button" data-mode="full" role="radio"><svg><use href="#i-full"/></svg><span>FULL</span></button>
+      </div>
+    </section>
+
+    <section class="sec sec-power">
+      <button type="button" id="power" class="power on" title="Display on / off"><span class="knob"></span><b>ON</b></button>
+    </section>
+
+    <section class="sec sec-pv">
+      <div class="pvrow">
+        <div class="pv"><i>CLOCK</i><span id="pvClock">00:00:00</span></div>
+        <div class="pv"><i>COUNTDOWN</i><span id="pvCd"></span></div>
+        <div class="pvicons">
+          <button type="button" class="icon" id="openDisplay" title="Open stage display"><svg><use href="#i-screen"/></svg><span class="dot" id="dispDot"></span></button>
+          <button type="button" class="icon" id="floatBtn" title="Float this strip on top of other apps"><svg><use href="#i-float"/></svg></button>
+          <button type="button" class="icon" id="settingsBtn" title="Settings"><svg><use href="#i-gear"/></svg></button>
+        </div>
+      </div>
+      <div class="pv pv-msg"><i>MESSAGE</i><span id="pvMsg1"></span><span id="pvMsg2"></span></div>
+    </section>
+  </div>
+  <div id="stripGhost" hidden>
+    <span>Control strip is floating</span>
+    <button type="button" id="unfloat" class="btn">Bring back</button>
+  </div>
+</div>
+
+<main class="below">
+  <section class="card run">
+    <header>
+      <h2>Run sheet</h2>
+      <span class="muted" id="runCount"></span>
+      <button type="button" class="btn ghost" id="editTpl2"><svg><use href="#i-doc"/></svg>Edit</button>
+    </header>
+    <ol id="runList"></ol>
+  </section>
+
+  <section class="side">
+    <section class="card stagecard">
+      <header>
+        <h2>Stage</h2>
+        <span class="status" id="dispStatus">No display</span>
+        <button type="button" class="btn red" id="openDisplay2"><svg><use href="#i-screen"/></svg>Open display</button>
+      </header>
+      <div class="pvframe" id="pvFrame"><iframe id="stagePreview" src="display.html?preview" title="Stage preview" tabindex="-1"></iframe></div>
+      <p class="hint" id="olpStatus"></p>
+    </section>
+
+    <section class="card healcard" id="healCard" hidden>
+      <header>
+        <h2>Healing queue</h2>
+        <button type="button" class="btn red" id="healUpdate"><svg><use href="#i-check"/></svg>Update</button>
+      </header>
+      <div class="healgrid">
+        <div>
+          <div class="healhead"><b>Left</b><span>( B )</span><em id="healLCount">0</em></div>
+          <textarea id="healL" spellcheck="false" placeholder="One name per line"></textarea>
+          <button type="button" class="btn ghost" id="healLNext">Next ▸</button>
+        </div>
+        <div>
+          <div class="healhead"><b>Right</b><span>( A )</span><em id="healRCount">0</em></div>
+          <textarea id="healR" spellcheck="false" placeholder="One name per line"></textarea>
+          <button type="button" class="btn ghost" id="healRNext">Next ▸</button>
+        </div>
+      </div>
+      <p class="hint">Topmost name on each list is shown on the stage.</p>
+    </section>
+  </section>
+</main>
+
+<!-- Settings -->
+<dialog id="settingsDlg" class="dlg">
+  <form method="dialog" id="settingsForm">
+    <header><h2>Settings</h2><button class="x" value="cancel" aria-label="Close">×</button></header>
+    <div class="dlgbody">
+      <fieldset>
+        <legend>Stage screen</legend>
+        <div class="row2">
+          <select name="stageScreen" id="stageScreen"><option value="">Auto (the other screen)</option></select>
+          <button type="button" class="btn ghost" id="detectScreens">Detect</button>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>OpenLP stage view</legend>
+        <label class="chk"><input type="checkbox" name="openlpEnabled"> Show under the teleprompter</label>
+        <input name="openlpUrl" type="url" placeholder="http://localhost:4316/stage">
+        <div class="row2">
+          <select name="openlpPlacement">
+            <option value="below">Below the TOP bar</option>
+            <option value="behind">Behind the TOP bar</option>
+          </select>
+          <button type="button" class="btn ghost" id="reloadOlp">Reload</button>
+        </div>
+      </fieldset>
+      <div class="cols">
+        <fieldset>
+          <legend>Normal mode <small>TOP · HEAL · CT</small></legend>
+          <label>Width <input name="normalWidth" type="number" min="600" max="9999"></label>
+          <label>Height <input name="normalHeight" type="number" min="50" max="9999"></label>
+          <label>Clock size <input name="normalClockSize" type="number" min="1" max="500"></label>
+          <label>Countdown size <input name="normalCountdownSize" type="number" min="1" max="500"></label>
+          <label>Message size <input name="normalMessageSize" type="number" min="1" max="500"></label>
+          <label>Message align <select name="normalMessageAlign"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select></label>
+        </fieldset>
+        <fieldset>
+          <legend>Fullscreen mode <small>FULL</small></legend>
+          <label>Width <input name="fullWidth" type="number" min="600" max="9999"></label>
+          <label>Height <input name="fullHeight" type="number" min="50" max="9999"></label>
+          <label>Clock size <input name="fullClockSize" type="number" min="1" max="500"></label>
+          <label>Countdown size <input name="fullCountdownSize" type="number" min="1" max="500"></label>
+          <label>Message size <input name="fullMessageSize" type="number" min="1" max="500"></label>
+          <label>Message align <select name="fullMessageAlign"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select></label>
+        </fieldset>
+      </div>
+      <fieldset>
+        <legend>Healing queue titles</legend>
+        <div class="row2"><input name="healLeftTitle" placeholder="LEFT - B"><input name="healRightTitle" placeholder="RIGHT - A"></div>
+      </fieldset>
+    </div>
+    <footer>
+      <span class="muted">Version <span id="ver"></span> · based on 5.4B</span>
+      <button type="button" class="btn ghost" id="resetSettings">Reset to default</button>
+      <button type="submit" class="btn red" value="save" id="saveSettings">Save</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- Template editor -->
+<dialog id="tplDlg" class="dlg">
+  <form method="dialog" id="tplForm">
+    <header><h2>Message template</h2><button class="x" value="cancel" aria-label="Close">×</button></header>
+    <div class="dlgbody">
+      <p class="hint">Separate entries with blank lines · text after <code>--&gt;</code> is a note for the operator</p>
+      <textarea id="tplText" spellcheck="false"></textarea>
+    </div>
+    <footer>
+      <label class="btn ghost file">Import .txt<input type="file" id="tplImport" accept=".txt,text/plain" hidden></label>
+      <button type="button" class="btn ghost" id="tplExport">Export .txt</button>
+      <span class="spacer"></span>
+      <button type="submit" class="btn red" value="save" id="tplSave">Save</button>
+    </footer>
+  </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/common.js"></script>
+<script src="js/control.js"></script>
+</body>
+</html>

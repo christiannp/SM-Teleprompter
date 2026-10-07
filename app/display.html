@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GMS Teleprompter · Stage</title>
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/display.css">
+</head>
+<body>
+  <!-- layer 0: OpenLP stage view (what used to sit underneath the always-on-top bar) -->
+  <iframe id="openlp" title="OpenLP stage view" allow="local-network-access; local-network; loopback-network" referrerpolicy="no-referrer" hidden></iframe>
+  <div id="openlpPlaceholder" hidden><span>OpenLP stage view</span></div>
+
+  <!-- layer 1: teleprompter -->
+  <div id="stage">
+    <div id="canvas">
+      <div class="box" id="clockBox"><span id="clock">00:00</span></div>
+      <div class="box" id="cdBox"><span id="cd"></span></div>
+      <div class="box" id="msgBox"><div id="msg"></div></div>
+      <div id="heal" hidden>
+        <div class="heal-rule"></div>
+        <div class="heal-col" id="healL">
+          <div class="heal-title"></div>
+          <div class="heal-count">0</div>
+          <div class="heal-name"></div>
+        </div>
+        <div class="heal-col" id="healR">
+          <div class="heal-title"></div>
+          <div class="heal-count">0</div>
+          <div class="heal-name"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="blink"></div>
+
+  <div id="start" hidden>
+    <div class="start-card">
+      <div class="start-logo">GMS</div>
+      <button id="goFull" type="button">Show fullscreen on <b id="screenName">this screen</b></button>
+      <button id="dismiss" type="button" class="ghost">Not now</button>
+      <p>Double-click anywhere or press <kbd>F</kbd> to toggle fullscreen</p>
+    </div>
+  </div>
+
+<script src="js/common.js"></script>
+<script src="js/display.js"></script>
+</body>
+</html>
