@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Lock-down: only this site's own scripts/styles; network and frames only to OpenLP on this computer -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' http://localhost:* http://127.0.0.1:*; frame-src http://localhost:* http://127.0.0.1:*; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
 <title>GMS Teleprompter · Stage</title>
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/display.css">
+<link rel="stylesheet" href="css/display.css?v=1.2">
 </head>
 <body>
   <!-- layer 0: OpenLP stage view (what used to sit underneath the always-on-top bar) -->
-  <iframe id="openlp" title="OpenLP stage view" allow="local-network-access; local-network; loopback-network" referrerpolicy="no-referrer" hidden></iframe>
+  <!-- sandbox: OpenLP may run its own scripts but cannot navigate this page, open pop-ups, submit forms or show dialogs -->
+  <iframe id="openlp" title="OpenLP stage view" sandbox="allow-scripts allow-same-origin" allow="local-network-access; local-network; loopback-network" referrerpolicy="no-referrer" hidden></iframe>
   <div id="openlpPlaceholder" hidden><span>OpenLP stage view</span></div>
 
   <!-- layer 1: teleprompter -->
@@ -45,7 +49,7 @@
     </div>
   </div>
 
-<script src="js/common.js"></script>
-<script src="js/display.js"></script>
+<script src="js/common.js?v=1.2"></script>
+<script src="js/display.js?v=1.2"></script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+# SM Teleprompter: caching + lock-down headers (ignored safely if the server doesn't allow .htaccess or mod_headers).
+<IfModule mod_headers.c>
+  # Always re-check pages, scripts and styles with the server (cheap 304s via ETag),
+  # so a new release never mixes a fresh page with a stale script from the browser cache.
+  <FilesMatch "\.(html|js|css|webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Only this site may embed these pages (the main lock-down rules are in each page's CSP meta tag).
+  Header set Content-Security-Policy "frame-ancestors 'self'"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "no-referrer"
+</IfModule>
