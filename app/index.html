@@ -26,6 +26,7 @@
   <symbol id="i-full" viewBox="0 0 28 20"><rect x="1" y="1" width="26" height="18" rx="2" fill="currentColor"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.4 9.3a2.7 2.7 0 0 1 5.2 1c0 1.8-2.6 2.3-2.6 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="17.4" r="1.1" fill="currentColor"/></symbol>
 </svg>
 
 <div id="stripHome">
@@ -93,6 +94,7 @@
           <button type="button" class="icon" id="openDisplay" title="Open stage display"><svg><use href="#i-screen"/></svg><span class="dot" id="dispDot"></span></button>
           <button type="button" class="icon" id="floatBtn" title="Float this strip on top of other apps"><svg><use href="#i-float"/></svg></button>
           <button type="button" class="icon" id="settingsBtn" title="Settings"><svg><use href="#i-gear"/></svg></button>
+          <button type="button" class="icon" id="helpBtn" title="Help: show lyrics from OpenLP or ProPresenter" aria-haspopup="dialog"><svg><use href="#i-help"/></svg></button>
         </div>
       </div>
       <div class="pv pv-msg"><i>MESSAGE</i><span id="pvMsg1"></span><span id="pvMsg2"></span></div>
@@ -218,6 +220,78 @@
       <span class="spacer"></span>
       <button type="submit" class="btn red" value="save" id="tplSave">Save</button>
     </footer>
+  </form>
+</dialog>
+
+<!-- Help: lyrics from OpenLP / ProPresenter -->
+<dialog id="helpDlg" class="dlg help" aria-labelledby="helpTitle">
+  <form method="dialog">
+    <header><h2 id="helpTitle">Show lyrics under the teleprompter</h2><button class="x" value="cancel" aria-label="Close">×</button></header>
+    <div class="tabs" role="tablist" aria-label="Lyrics software">
+      <button type="button" role="tab" id="tab-openlp" aria-controls="panel-openlp" data-tab="openlp">OpenLP</button>
+      <button type="button" role="tab" id="tab-propresenter" aria-controls="panel-propresenter" data-tab="propresenter">ProPresenter</button>
+    </div>
+    <div class="dlgbody">
+
+      <section class="tabpanel" role="tabpanel" id="panel-openlp" aria-labelledby="tab-openlp">
+        <p class="lead">OpenLP has its own web <b>stage view</b>. The stage display shows it underneath the teleprompter strip, so the lyrics follow OpenLP live with nothing extra to install.</p>
+        <ol class="steps">
+          <li>
+            <h3>Turn on OpenLP's remote</h3>
+            <p>In OpenLP, open <b>Settings › Configure OpenLP… › Remote Interface</b>. Note the <b>Stage view URL</b> (normally <code>http://localhost:4316/stage</code>).</p>
+          </li>
+          <li>
+            <h3>Point the teleprompter at it</h3>
+            <p>Open <b>Settings</b> (gear icon) › <b>OpenLP stage view</b>. Tick <b>Show under the teleprompter</b>, paste the URL, choose <b>Below</b> or <b>Behind the TOP bar</b>, then press <b>Save</b>.</p>
+          </li>
+          <li>
+            <h3>Open the stage display</h3>
+            <p>Click the screen icon (or <b>Open display</b>) and click the display once to go full screen. If Chrome asks to allow access to devices on your local network, choose <b>Allow</b>.</p>
+          </li>
+          <li>
+            <h3>Check it</h3>
+            <p>The Stage card shows <b>OpenLP stage view connected</b>. Put a song live in OpenLP; the lyric appears under the strip.</p>
+          </li>
+        </ol>
+        <div class="note">
+          <b>Run OpenLP on this same Mac.</b> The page is served over https, so the browser only lets it load OpenLP from <code>localhost</code>. An address like <code>http://192.168.x.x:4316</code> will be blocked.
+        </div>
+        <details>
+          <summary>Not showing? / Change the lyric style</summary>
+          <ul>
+            <li><b>“Waiting for OpenLP…”</b>: make sure OpenLP is open and the port matches the one in Remote Interface. Then press <b>Reload</b> in Settings.</li>
+            <li><b>Custom look</b>: in OpenLP choose <b>Tools › Open Data Folder</b>. Make a folder <code>stages/sm/</code> with <code>stage.html</code>, <code>stage.css</code> and <code>stage.js</code> (copy OpenLP's custom stage view sample). Then use <code>http://localhost:4316/stage/sm</code> as the URL. This lets you hide OpenLP's own clock and size the lyrics for the area under the strip.</li>
+          </ul>
+        </details>
+        <div class="helpactions"><button type="button" class="btn red" id="helpToSettings"><svg><use href="#i-gear"/></svg>Open Settings</button></div>
+      </section>
+
+      <section class="tabpanel" role="tabpanel" id="panel-propresenter" aria-labelledby="tab-propresenter" hidden>
+        <p class="lead">ProPresenter has no web stage view to embed, so it works the other way round: <b>ProPresenter's stage screen</b> shows the lyrics, and the teleprompter strip is brought into it as live video over <b>NDI</b>.</p>
+        <ol class="steps">
+          <li>
+            <h3>Let ProPresenter draw the lyrics</h3>
+            <p>Here, open <b>Settings</b> (gear icon) › <b>OpenLP stage view</b>, untick <b>Show under the teleprompter</b>, press <b>Save</b>, and use <b>TOP</b> mode.</p>
+          </li>
+          <li>
+            <h3>Send the stage display over NDI</h3>
+            <p>Open the stage display (screen icon) on a spare screen or window. Capture that window as an NDI source, for example with <b>OBS + the DistroAV (NDI) plugin</b> or <b>NDI Tools</b> screen capture.</p>
+          </li>
+          <li>
+            <h3>Add it to ProPresenter</h3>
+            <p>In ProPresenter, add that NDI source as a <b>Live Video</b> input.</p>
+          </li>
+          <li>
+            <h3>Build a stage layout</h3>
+            <p>In ProPresenter's stage layout editor, put a shape filled with the <b>Live Video</b> input across the top. Add <b>Current Slide Text</b> (and <b>Next Slide Text</b>) below it, then assign the layout to the stage screen.</p>
+          </li>
+        </ol>
+        <div class="note">
+          Keep operating from this control strip as usual: messages, countdown and blink go through the NDI feed, and the lyrics follow ProPresenter. NDI adds about 1–2 frames of delay.
+        </div>
+      </section>
+
+    </div>
   </form>
 </dialog>
 

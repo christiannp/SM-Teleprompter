@@ -1,5 +1,5 @@
 /* Offline cache for the GMS Teleprompter: network first, cache as fallback (so updates on the server show up right away). */
-const CACHE = 'gms-tele-v1';
+const CACHE = 'gms-tele-v2';
 const FILES = ['./', 'index.html', 'display.html', 'css/control.css', 'css/display.css', 'js/common.js', 'js/control.js', 'js/display.js', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
