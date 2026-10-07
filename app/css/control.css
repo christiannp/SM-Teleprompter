@@ -209,6 +209,31 @@ label.chk input { width: 16px; height: 16px; accent-color: var(--red); }
 .dlg .hint { margin: 0; }
 code { background: #26272b; padding: 1px 5px; border-radius: 4px; }
 
+/* help dialog */
+.dlg.help { width: min(680px, calc(100vw - 32px)); }
+.dlg.help form { height: min(760px, calc(100vh - 40px)); }   /* same height for both tabs, so switching doesn't make the dialog jump */
+.dlg.help .dlgbody { flex: 1; align-content: start; }
+.tabs { display: flex; gap: 4px; padding: 10px 16px 0; border-bottom: 1px solid var(--line); }
+.tabs button { position: relative; height: 34px; padding: 0 14px; border: 0; border-radius: 8px 8px 0 0; background: transparent; color: var(--muted); font: 700 13px/1 var(--ui); letter-spacing: .02em; }
+.tabs button:hover { color: var(--text); }
+.tabs button[aria-selected="true"] { color: #fff; background: var(--card-2); }
+.tabs button[aria-selected="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--red); }
+.tabs button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.tabpanel { display: grid; gap: 12px; }
+.tabpanel[hidden] { display: none; }
+.help .lead { margin: 0; color: #cfd0d4; line-height: 1.5; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: step; }
+.steps li { counter-increment: step; position: relative; padding: 10px 12px 10px 48px; border-radius: 10px; background: var(--card-2); border: 1px solid var(--line); }
+.steps li::before { content: counter(step); position: absolute; left: 12px; top: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--red); color: #fff; font: 800 12px/24px var(--ui); text-align: center; }
+.steps h3 { margin: 2px 0 4px; font: 700 14px/1.3 var(--ui); color: #f2f2f4; }
+.steps p { margin: 0; color: #b3b5bb; line-height: 1.5; }
+.steps b, .help .note b, .help details b { color: #e6e7ea; font-weight: 700; }
+.help .note { padding: 10px 12px; border-radius: 10px; border: 1px solid #5a4a12; background: #221d0c; color: #d9cfa6; line-height: 1.5; }
+.help details { border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; }
+.help summary { cursor: pointer; padding: 10px 0; font-weight: 700; color: #cfd0d4; }
+.help details ul { margin: 0 0 10px; padding-left: 18px; color: #b3b5bb; display: grid; gap: 6px; line-height: 1.5; }
+.helpactions { display: flex; justify-content: flex-end; }
+
 #toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #f2f2f4; color: #111; padding: 10px 16px; border-radius: 10px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,.5); transition: opacity .2s, transform .2s; z-index: 50; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
 
